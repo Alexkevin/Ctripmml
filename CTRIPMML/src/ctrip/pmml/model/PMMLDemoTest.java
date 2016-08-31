@@ -29,18 +29,16 @@ public class PMMLDemoTest {
         PMML model = PMMLUtil.unmarshal(is);
         ModelEvaluatorFactory mef = ModelEvaluatorFactory.newInstance();
         ModelEvaluator<?> modelEvaluator = mef.newModelEvaluator(model);
-        Evaluator evaluator = modelEvaluator;
-        evaluator.verify();
+        modelEvaluator.verify();
 
 
         //Predicting probability
         List<ArrayList<Double>> listArray = new ArrayList<>();
         for (String[] s : data) {
-            PreprocessData ppd = new PreprocessData(s, evaluator);
+            PreprocessData ppd = new PreprocessData(s, modelEvaluator);
             Map<FieldName, FieldValue> testData = ppd.testData();
-
-            GettingScore scoreE = new GettingScore(s, evaluator);
-            ArrayList<Double> result = scoreE.gettingProbability(evaluator);
+            GettingScore scoreE = new GettingScore(s, modelEvaluator);
+            ArrayList<Double> result = scoreE.gettingProbability(modelEvaluator);
             listArray.add(result);
 
         }
